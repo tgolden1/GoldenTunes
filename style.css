@@ -1,0 +1,14 @@
+.parallax img{
+    width: 100%;
+}
+.parallax-container h1{
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 500px;
+    font-family: 'Risque', cursive;
+}
+#songs p,#songs h4{
+    text-align: center;
+    font-weight: bold;
+}

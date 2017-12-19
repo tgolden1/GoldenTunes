@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>iTunes API Tutorial</title>
+    <link rel="shortcut icon" href="http://findicons.com/files/icons/2770/ios_7_icons/512/music.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Risque" rel="stylesheet">
+    
+</head>
+
+<body>
+        <div class="parallax-container">
+            <h1>Golden Tunes API </h1>
+                <div class="parallax"><img src="singapore.jpg"></div>
+              </div>
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="textarea1" class="materialize-textarea"></textarea>
+                    <label for="textarea1">artist search</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="carousel">
+            
+          </div>
+    <!-- <h3>
+        <a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searchexamples">
+            Some Examples
+        </a>
+    </h3>
+    <h3>
+        To Do List:
+    </h3>
+    <ul>
+        <li>CSS frame work</li>
+        <li>Search Bar</li>
+        <li>Loading image.</li>
+        <li>Error Message</li>
+        <li>No result found message.</li>
+        <li>Make it look pretty:)</li>
+    </ul> -->
+    
+    <ul id="songs">
+
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+        // $(document).ready(... This is jQuery function that runs when the page is loaded.
+        // Do you want to load when the page is ready or when some button is clicked?
+        // Are you waiting for an input from the user???
+        $(document).ready(function () {
+
+            $('.parallax').parallax();
+            
+            $("form").keypress(function (e) {
+                if (e.which == 13) {
+                    var input = $("#textarea1").val()
+                    $("#songs").html("<img src = 'tractorloading.gif'>")
+                    getdata(input);
+                    $("form")[0].reset()
+                    $("#textarea1").blur()
+                }
+            });
+            function getdata(input){
+            $.ajax({
+                url: "http://itunes.apple.com/search?term="+input,
+                dataType: 'JSONP'
+            })
+                .done(function (data) {
+                    console.log(data);
+                    $("#songs").html("")
+                    $(".carousel").html("")
+                    $(".carousel").carousel('destroy')
+                    // add code for when response from apple comes back.
+                    if(data.results.length===0){
+                        $('#songs').append("<h4>No Results</h4><p>Please try another search</p>")
+                    }
+                    for (var i = 0; i < data.results.length; i++) {
+                        if (data.results[i].trackName) {
+                            $('#songs').append("<li>" + data.results[i].trackName + "</li>");
+                            $('.carousel').append(`<a class="carousel-item" href="#one!"><img src="${data.results[i].artworkUrl100}"></a>`);
+                        }
+                    }
+                    $('.carousel').carousel();
+                })
+                .fail(function (data) {
+                    console.log(data);
+                    $('#songs').append(data.status);
+                })
+            }
+        });// End of on ready part
+
+
+
+
+
+    </script>
+</body>
+
+</html>
